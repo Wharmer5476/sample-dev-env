@@ -1,17 +1,100 @@
-exec { "apt-get update":
-		path => "/usr/bin",
+# ------------ Preinstall Stage ------------- #
+
+stage { 'preinstall':
+	before => Stage['main']
+}
+
+
+# Define the apt_get_update class
+class apt_get_update {
+	exec { 'apt-get -y update':
+		path => {'/usr/sbin', '/usr/bin', '/sbin', '/bin'}
 	}
-package { "apache2":
-		ensure => present,
-		require => Exec["apt-get update"],
-	}
-service { "apache2":
-		ensure => "running",
-		require => Package["apache2"],
-	}
-file { "/var/www/sample-webapp":
-		ensure => "link",
-		target => "/vagrant/sample-webapp",
-		require => Package["apache2"],
-		notify => Service["apache2"],
-	}
+}
+
+# Declare (invoke) the apt_get_update
+class {'apt_get_update':
+	stage => preinstall
+}
+
+# ----- NodeJS ------ #
+
+class { 'nodejs':
+	version => 'stable'
+}
+
+package { 'express':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save',
+}
+
+package { 'ejs':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save',
+}
+
+package { 'async':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save',
+}
+
+package { 'underscore':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save',
+}
+
+package { 'moment':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save',
+}
+
+package { 'mongoose':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save',
+}
+
+package { 'nodemon':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save-dev',
+}
+
+package { 'charlatan':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save-dev',
+}
+
+package { 'grunt':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save-dev',
+}
+
+package { 'grunt-contrib-watch':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save-dev',
+}
+
+package { 'grunt-contrib-compass':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save-dev',
+}
+
+package { 'grunt-cli':
+	ensure => present,
+	provider => 'npm',
+	install_opt => '--save-dev',
+}
+
+# ----- Mongodb ----- #
+
+class { 'mongodb':}
