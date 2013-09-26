@@ -5,8 +5,8 @@ Vagrant::Config.run do |config|
 	config.vm.network :hostonly, "192.168.33.10"
 
 	# Set the default project share to use nfs
-	config.vm.share_folder("v-web", "/vagrant/www", "./www", :nfs => true)
-	config.vm.share_folder("v-db", "/vagrant/db", "./db", :nfs => true)
+	#config.vm.share_folder("v-web", "/vagrant/www", "./www", :nfs => true)
+	#config.vm.share_folder("v-db", "/vagrant/db", "./db", :nfs => true)
 
 	config.vm.forward_port 80, 3080
 	
